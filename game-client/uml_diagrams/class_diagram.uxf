@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>1580</x>
+      <y>300</y>
+      <w>390</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>interaction frame</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>1580</x>
+      <y>380</y>
+      <w>390</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>interaction frame
+--
+inner</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>100</x>
+      <y>60</y>
+      <w>1400</w>
+      <h>980</h>
+    </coordinates>
+    <panel_attributes>Game</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>220</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>*Generator*
+--
+- mapGenerator: MapGenerator
+- map: Map
+- heightsGenerator: HeightsGenerator
+- heights: Heights
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -1,0 +1,6 @@
+
+class Generator {
+
+}
+
+export { Generator };

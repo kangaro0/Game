@@ -1,0 +1,21 @@
+{
+  "name": "game-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/GameServer",
+  "types": "lib/GameServer",
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/GameServer.ts"
+  },
+  "author": "Johannes Herbert",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^7.0.18",
+    "nodemon": "^1.11.0",
+    "ts-node": "^3.0.4",
+    "typescript": "^2.3.2",
+    "webworker-threads": "^0.7.11"
+  }
+}

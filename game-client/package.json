@@ -1,0 +1,29 @@
+{
+  "name": "my-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/three": "^0.84.7",
+    "three": "^0.85.2",
+    "three-effectcomposer": "0.0.1",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "webpack": "^2.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.12",
+    "@types/three": "^0.84.3",
+    "html-webpack-plugin": "^2.28.0",
+    "simplex-noise": "^2.3.0",
+    "source-map-loader": "^0.2.1",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "webpack": "^2.3.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
