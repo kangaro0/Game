@@ -18,7 +18,7 @@ export class HeightGenerator {
     }
 
     public getHeight( heightFunction: number ){
-        
+        var height = 
     }
 
     public generateHeights() {

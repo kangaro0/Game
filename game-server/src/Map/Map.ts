@@ -17,17 +17,11 @@ export interface MapOptions {
 
 export class Map {
 
-    private chunks: Array<Chunk>;
-
     private heightMap: HeightMap;
-
     private biomeMap: HeightMap;
 
     constructor( options: MapOptions ){
 
-        this.chunks = new Array<Chunk>( options.map.width * options.map.depth );
-
-        this.heightMap = this.heightMapFactory
         this.heightMap = new HeightMap({
             width: options.map.width * options.chunk.width,
             depth: options.map.depth * options.chunk.depth
@@ -36,6 +30,8 @@ export class Map {
             width: options.map.width * options.chunk.width,
             depth: options.map.depth * options.chunk.depth
         });
+
+        
     }
 
 

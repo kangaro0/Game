@@ -10,9 +10,12 @@
   },
   "author": "Johannes Herbert",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "socket.io": "^2.0.3"
+  },
   "devDependencies": {
-    "@types/node": "^7.0.18",
+    "@types/node": "^7.0.31",
+    "@types/webrtc": "0.0.21",
     "nodemon": "^1.11.0",
     "ts-node": "^3.0.4",
     "typescript": "^2.3.2",
