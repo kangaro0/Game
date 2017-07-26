@@ -1,7 +1,7 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/ts/Engine/VoxelEngine.ts',
+    entry: './src/ts/Map/ChunkFactory.ts',
     output: {
         filename: 'bundle.js',
         path: __dirname + '/dist/',

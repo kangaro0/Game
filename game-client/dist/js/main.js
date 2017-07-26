@@ -3,6 +3,48 @@ var renderer, camera, light, scene, controls, ambientLight, dirLight, clock;
 
 window.onload = function () {
 
+    function init(){
+        var options = {
+            size: 50,
+            origin: {
+                x: 0,
+                z: 0
+            },
+            noiseOptions: {
+                octaves: [
+                    {
+                        frequency: 1
+                    }
+                ],
+                redistribution: 0.5
+            }
+        }
+
+        var chunk = VoxelEngine.ChunkFactory.create( options );
+
+        var canvas = document.getElementById( 'map' );
+        var ctx = canvas.getContext( '2d' );
+        var imageData = ctx.createImageData( options.size, options.size );
+
+        var x = 0, maxX = options.size;
+        for( ; x < maxX ; x++ ){
+
+            var z = 0, maxZ = options.size;
+            for( ; z < maxZ ; z++ ){
+
+                imageData.data[ ( ( options.size * x ) + z ) * 4 ] = 255;
+                imageData.data[ ( ( options.size * x ) + z ) * 4 + 1 ] = 255;
+                imageData.data[ ( ( options.size * x ) + z ) * 4 + 2 ] = 255;
+                imageData.data[ ( ( options.size * x ) + z ) * 4 + 3 ] = chunk.points[ ( options.size * z ) + x ].y * 100;
+            }
+        }
+
+        ctx.putImageData( imageData, 0, 0 );
+    }
+
+    init();
+
+    /*
     var world = new VoxelEngine.World({
         worldSize: 32,
         chunkSize: 64,
@@ -12,7 +54,7 @@ window.onload = function () {
             z: 10
         },
         scale: 1,
-        maxExpansion: 4,
+        maxExpansion: 64,
         sealevel: 35
     });
 
@@ -20,34 +62,30 @@ window.onload = function () {
 
         clock = new THREE.Clock();
         scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2( 0xffffff, 0.00015 );
         
         camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
         camera.position.z = 200;
-        camera.position.y = 60;
+        camera.position.y = 200;
         scene.add( camera );
 
         controls = new THREE.FlyControls( camera );
 
         controls.movementSpeed = 1000;
-		controls.lookSpeed = 0.125;
-		controls.lookVertical = true;
-		controls.constrainVertical = true;
-		controls.verticalMin = 1.1;
-		controls.verticalMax = 2.2;
+		controls.domElement = document.body;
+		controls.rollSpeed = Math.PI / 24;
+		controls.autoForward = false;
+		controls.dragToLook = false;
 
         dirLight = new THREE.DirectionalLight( 0xffffff );
-		dirLight.position.set( 32, 5, 32);
-        dirLight.lookAt( new THREE.Vector3( 32, 0, 32 ) );
+		dirLight.position.set( -1, 0, 1 ).normalize();
         scene.add( dirLight );
 
-        ambientLight = new THREE.AmbientLight( 0xcccccc ); // soft white light
-
+        ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
         scene.add( ambientLight );
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth , window.innerHeight );
-        renderer.setClearColor( 0xffffff );
+        renderer.setClearColor( 0xEEEEEE );
         document.body.appendChild( renderer.domElement );   
 
         var height = 512;
@@ -59,13 +97,8 @@ window.onload = function () {
         var current = 0;
         var chunkCount = world.getChunkCount();
 
-        // only load one chunk
-        for( ; current < 8 ; current++ ){
-            scene.add( world.getChunkById( current ).surface );
-        }
-        // */
-
     }
+    
 
     function render() {
         requestAnimationFrame( render );
@@ -77,8 +110,6 @@ window.onload = function () {
 		controls.update( delta );
         
     }
-
-    init();
-
-    render();
+    */
+    
 }

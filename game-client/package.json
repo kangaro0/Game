@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@types/three": "^0.84.7",
+    "simplex-noise": "^2.3.0",
     "three": "^0.85.2",
     "three-effectcomposer": "0.0.1",
     "ts-loader": "^2.0.3",

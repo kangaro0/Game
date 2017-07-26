@@ -1,6 +1,0 @@
-
-class MessageFactory {
-
-    constructor
-
-}

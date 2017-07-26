@@ -5,17 +5,26 @@
   "main": "lib/GameServer",
   "types": "lib/GameServer",
   "scripts": {
-    "start": "npm run build:live",
-    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/GameServer.ts"
+    "dev": "NODE=development nodemon ./bin/www",
+    "grunt": "grunt",
+    "start": "node ./bin/www"
   },
   "author": "Johannes Herbert",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
     "socket.io": "^2.0.3"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.16.4",
+    "@types/express": "^4.0.36",
     "@types/node": "^7.0.31",
     "@types/webrtc": "0.0.21",
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-ts": "^6.0.0-beta.16",
     "nodemon": "^1.11.0",
     "ts-node": "^3.0.4",
     "typescript": "^2.3.2",

@@ -1,21 +1,24 @@
 
-export interface ChunkOptions{
-    width: number;
-    depth: number;
-}
+import { IPoint } from '../Interfaces/IPoint';
 
 export class Chunk {
 
-    private width: number;
-    private depth: number;
-
     private size: number;
+    private points: IPoint[];
 
-    constructor( options: ChunkOptions ){
+    constructor( size: number ){
+        this.size = size;
+    }
 
-        this.width = options.width;
-        this.depth = options.depth;
+    getPoint( x: number, y: number ){
+        return this.points[ this.size * y + x ];
+    }
 
-        this.size = options.width * options.depth;
+    getPoints( ): IPoint[] {
+        return this.points;
+    }
+
+    setPoint( x: number, y: number, value: IPoint ){
+        this.points[ this.size * y + x ] = value;
     }
 }

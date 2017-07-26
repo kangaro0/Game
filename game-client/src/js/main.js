@@ -3,6 +3,7 @@ var renderer, camera, light, scene, controls, ambientLight, dirLight, clock;
 
 window.onload = function () {
 
+    /*
     var world = new VoxelEngine.World({
         worldSize: 32,
         chunkSize: 64,
@@ -55,13 +56,8 @@ window.onload = function () {
         var current = 0;
         var chunkCount = world.getChunkCount();
 
-        // only load one chunk
-        for( ; current < 1 ; current++ ){
-            scene.add( world.getChunkById( current ).surface );
-        }
-        // */
-
     }
+    
 
     function render() {
         requestAnimationFrame( render );
@@ -73,8 +69,6 @@ window.onload = function () {
 		controls.update( delta );
         
     }
-
-    init();
-
-    render();
+    */
+    
 }
