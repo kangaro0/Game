@@ -39,11 +39,11 @@ export class ChunkFactory {
         var simplexNoise = new ConfiguredSimplexNoise( options.noiseOptions );
         var chunk = new Chunk( options.size );
 
-        var x = 0, maxX = options.size;
-        for( ; x < maxX ; x++ ){
+        var z = 0, maxZ = options.size;
+        for( ; z < maxZ ; z++ ){
 
-            var z = 0, maxZ = options.size;
-            for( ; z < maxZ ; z++ ){
+            var x = 0, maxX = options.size;
+            for( ; x < maxX ; x++ ){
 
                 var point: IPoint = {
                     x: x,

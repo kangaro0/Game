@@ -5,7 +5,7 @@ window.onload = function () {
 
     function init(){
         var options = {
-            size: 500,
+            size: 512,
             origin: {
                 x: 0,
                 z: 0
@@ -13,19 +13,19 @@ window.onload = function () {
             noiseOptions: {
                 octaves: [
                     {
-                        frequency: 1/256
+                        frequency: 1/512
+                    },
+                    {
+                        frequency: 1/128
                     },
                     {
                         frequency: 1/64
-                    },
-                    {
-                        frequency: 1/32
                     }
                 ],
-                seed: 1337,
+                seed: 02061991,
                 redistribution: 1,
                 maxHeight: 255,
-                step: 50
+                step: 10
             }
         }
 
