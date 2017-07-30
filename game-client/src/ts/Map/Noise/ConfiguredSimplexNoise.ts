@@ -1,9 +1,13 @@
 
-var SimplexNoise = require('simplex-noise'),
+var SimplexNoise = require('simplex-noise');
+var Alea = require('alea');
 
 export interface ConfiguredSimplexNoiseOptions {
+    seed: number;
     octaves: SimplexOctaves[];
     redistribution: number;
+    maxHeight: number;
+    step: number;
 }
 
 export interface SimplexOctaves {
@@ -14,6 +18,8 @@ export class ConfiguredSimplexNoise {
 
     private octaves: SimplexOctaves[];
     private redistribution: number;
+    private maxHeight: number;
+    private step: number;
 
     private simplexNoise;
 
@@ -21,8 +27,10 @@ export class ConfiguredSimplexNoise {
 
         this.octaves = options.octaves;
         this.redistribution = options.redistribution;
+        this.maxHeight = options.maxHeight;
+        this.step = options.step;
 
-        this.simplexNoise = new SimplexNoise( Math.random );
+        this.simplexNoise = new SimplexNoise( new Alea( options.seed ) );
     }
 
     public noise( x: number, z: number ): number {
@@ -38,6 +46,16 @@ export class ConfiguredSimplexNoise {
         // retribution
         noise = Math.pow( noise, this.redistribution );
 
+        // normalize to [ 0, 1 ] and then to [ 0, maxHeight ];
+        noise = ( noise + 1 ) / 2 * this.maxHeight;
+        
+        noise = this.roundTo( noise, this.step );
+
         return noise;
+    }
+
+    private roundTo( value: number, step: number ){
+
+        return Math.round( value / step ) * step;
     }
 }

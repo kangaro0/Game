@@ -5,7 +5,7 @@ window.onload = function () {
 
     function init(){
         var options = {
-            size: 50,
+            size: 500,
             origin: {
                 x: 0,
                 z: 0
@@ -13,10 +13,19 @@ window.onload = function () {
             noiseOptions: {
                 octaves: [
                     {
-                        frequency: 1
+                        frequency: 1/256
+                    },
+                    {
+                        frequency: 1/64
+                    },
+                    {
+                        frequency: 1/32
                     }
                 ],
-                redistribution: 0.5
+                seed: 1337,
+                redistribution: 1,
+                maxHeight: 255,
+                step: 50
             }
         }
 
@@ -24,22 +33,18 @@ window.onload = function () {
 
         var canvas = document.getElementById( 'map' );
         var ctx = canvas.getContext( '2d' );
-        var imageData = ctx.createImageData( options.size, options.size );
 
-        var x = 0, maxX = options.size;
-        for( ; x < maxX ; x++ ){
+        var z = 0, maxZ = options.size;
+        for( ; z < maxZ ; z++ ){
 
-            var z = 0, maxZ = options.size;
-            for( ; z < maxZ ; z++ ){
+            var x = 0, maxX = options.size;
+            for( ; x < maxX ; x++ ){
 
-                imageData.data[ ( ( options.size * x ) + z ) * 4 ] = 255;
-                imageData.data[ ( ( options.size * x ) + z ) * 4 + 1 ] = 255;
-                imageData.data[ ( ( options.size * x ) + z ) * 4 + 2 ] = 255;
-                imageData.data[ ( ( options.size * x ) + z ) * 4 + 3 ] = chunk.points[ ( options.size * z ) + x ].y * 100;
+                ctx.fillStyle = 'rgba(0,0,0,' + ( chunk.points[ ( options.size  * x ) + z ].y / 255 ) + ')';
+                ctx.fillRect( x, z, 1, 1 );
+
             }
         }
-
-        ctx.putImageData( imageData, 0, 0 );
     }
 
     init();
