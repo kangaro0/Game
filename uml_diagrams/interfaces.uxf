@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>50</x>
+      <y>50</y>
+      <w>1000</w>
+      <h>820</h>
+    </coordinates>
+    <panel_attributes>Interfaces</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>130</x>
+      <y>130</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>ChunkOptions
+--
+size: number
+origin: {
+    x: number
+    y: number
+}
+noiseOptions: NoiseOptions</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>430</x>
+      <y>130</y>
+      <w>250</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>NoiseOptions
+--
+seed: number
+
+octaves: [
+    {
+        frequency: number
+    }
+]
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
