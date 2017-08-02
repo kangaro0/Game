@@ -2,28 +2,18 @@
 var SimplexNoise = require('simplex-noise');
 var Alea = require('alea');
 
-export interface ConfiguredSimplexNoiseOptions {
-    seed: number;
-    octaves: SimplexOctaves[];
-    redistribution: number;
-    maxHeight: number;
-    step: number;
-}
-
-export interface SimplexOctaves {
-    frequency: number;
-}
+import { INoiseOptions, IOctaveOptions } from '../../Interfaces/IMapGeneratorOptions';
 
 export class ConfiguredSimplexNoise {
 
-    private octaves: SimplexOctaves[];
+    private octaves: IOctaveOptions[];
     private redistribution: number;
     private maxHeight: number;
     private step: number;
 
     private simplexNoise;
 
-    constructor( options: ConfiguredSimplexNoiseOptions ){
+    constructor( options: INoiseOptions ){
 
         this.octaves = options.octaves;
         this.redistribution = options.redistribution;

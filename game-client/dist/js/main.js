@@ -22,7 +22,7 @@ window.onload = function () {
                         frequency: 1/64
                     }
                 ],
-                seed: 02061991,
+                seed: 233,
                 redistribution: 1,
                 maxHeight: 255,
                 step: 10

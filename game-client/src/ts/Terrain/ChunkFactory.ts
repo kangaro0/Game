@@ -2,41 +2,21 @@
 import { SimplexNoise } from 'simplex-noise';
 
 import { Chunk } from './Chunk';
-import { ConfiguredSimplexNoise, ConfiguredSimplexNoiseOptions, SimplexOctaves } from './Noise/ConfiguredSimplexNoise';
+import { ConfiguredSimplexNoise } from './Noise/ConfiguredSimplexNoise';
 
 import { IPoint } from '../Interfaces/IPoint';
-
-/*
-    VoxelEngine.ChunkFactory.create({
-        size: 50;
-        origin: {
-            x: 0,
-            y: 0
-        },
-        noiseOptions: {
-            octaves: [
-                {
-                    frequency: 1
-                }
-            ],
-            retribution: 0.5
-        }
-    });
-*/
-
-export interface ChunkFactoryOptions {
-    size: number;
-    origin: {
-        x: number;
-        z: number;
-    }
-    noiseOptions: ConfiguredSimplexNoiseOptions;
-}
+import { INoiseOptions } from '../Interfaces/IMapGeneratorOptions';
 
 export class ChunkFactory {
 
-    public static create( options: ChunkFactoryOptions ){
-        var simplexNoise = new ConfiguredSimplexNoise( options.noiseOptions );
+    private options: INoiseOptions;
+    private simplexNoise: ConfiguredSimplexNoise;
+
+    constructor( options: INoiseOptions ){
+        
+    }
+
+    public create( ){
         var chunk = new Chunk( options.size );
 
         var z = 0, maxZ = options.size;
@@ -47,7 +27,7 @@ export class ChunkFactory {
 
                 var point: IPoint = {
                     x: x,
-                    y: simplexNoise.noise( options.origin.x + x, options.origin.z + z ),
+                    y: this.simplexNoise.noise( options.origin.x + x, options.origin.z + z ),
                     z: z
                 };
 
