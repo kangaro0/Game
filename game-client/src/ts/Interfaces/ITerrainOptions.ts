@@ -1,15 +1,11 @@
 
-export interface IMapGeneratorOptions {
-
-    mapSize: number;                // quadratisches Grid; Groesse mapSize (x) * mapSize (y)
-    chunkSize: number;              // quadratisches Grid; Groesse chunkSize (x) * mapSize(x)
-    terrain: ITerrainOptions;
-
-}
 
 export interface ITerrainOptions {
-    heights: INoiseOptions;
-    biomes: INoiseOptions; 
+    mapSize: number;
+    chunkSize: number;
+    surface: INoiseOptions;
+    biomes: INoiseOptions;
+    waterLevel: number;             // Bis zu welcher Hoehe ist Wasser vorhanden? 
 }
 
 export interface INoiseOptions {

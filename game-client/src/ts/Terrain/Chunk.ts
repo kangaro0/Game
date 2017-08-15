@@ -3,23 +3,28 @@ import { IPoint } from '../Interfaces/IPoint';
 
 export class Chunk {
 
+    private id: number;
     private size: number;
-    private points: IPoint[];
+ 
+    private surface: IPoint[];
 
-    constructor( size: number ){
+    constructor( id: number, size: number ){
+        this.id = id;
         this.size = size;
-        this.points = new Array<IPoint>( size * size );
+        this.surface = new Array<IPoint>( size * size );
     }
 
-    getPoint( x: number, y: number ){
-        return this.points[ this.size * y + x ];
+    getId() { return this.id; }
+
+    getSurfacePoint( x: number, y: number ){
+        return this.surface[ this.size * y + x ];
     }
 
-    getPoints( ): IPoint[] {
-        return this.points;
+    getSurfacePoints( ): IPoint[] {
+        return this.surface;
     }
 
-    setPoint( x: number, z: number, value: IPoint ){
-        this.points[ this.size * x + z ] = value;
+    setSurfacePoint( x: number, z: number, value: IPoint ){
+        this.surface[ this.size * x + z ] = value;
     }
 }
