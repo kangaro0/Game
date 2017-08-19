@@ -27,6 +27,25 @@ export class Terrain {
         return this.createChunk( id, offsetX, offsetZ );
     }
 
+    public getNextChunk( action: string, currentChunkId: number ){
+
+        switch( action ){
+
+            case 'up':
+                
+                break;
+            case 'right':
+
+                break;
+            case 'down':
+
+                break;
+            case 'left':
+
+                break;
+        }
+    }
+
     public deleteChunk( id: number ){
         delete this.surfaceChunks[ id ];
     }

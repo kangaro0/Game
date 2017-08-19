@@ -10,7 +10,7 @@ export class SceneCreator {
     private options: ISceneCreatorOptions;
 
     private lastPlayerPosition: IPoint;
-    private lastChunkPosition: IPoint;
+    private currentChunk: Chunk;
 
     private scene: THREE.Scene;
     private terrain: Terrain;
@@ -37,25 +37,36 @@ export class SceneCreator {
 
         let mapSize = this.options.terrain.mapSize;
         let chunkSize = this.options.terrain.chunkSize;
+        let radius = this.options.scene.radius;
 
-        let chunkIndex = 0;
-        let z = 0, maxZ = 2 * this.options.scene.radius + 1;
-        for( ; z < maxZ ; z++ ){
+        let currentRadius = 0;
+        for( ; currentRadius <= radius ; currentRadius++ ){
 
-            let x = 0, maxX = maxZ; 
-            for( ; x < maxX ; x++, chunkIndex++ ){
+            let center = new THREE.Vector2( Math.floor( playerPosition.x / chunkSize ) * chunkSize + 1/2 * chunkSize, Math.floor( playerPosition.z / chunkSize ) * chunkSize + 1/2 * chunkSize );
+            let next = center.clone();
+            next.setComponent( 0, next.x + chunkSize * currentRadius );
 
-                let a = Math.floor( playerPosition.x / chunkSize );
-                let b = Math.floor( playerPosition.z / chunkSize );
-                
+            let angle = ( 90 * Math.PI / 180 ) / ( currentRadius + 1 );
 
-                let id = a + chunkSize * b;
+            let dirCount = 0, maxDir = 4 + 4 * currentRadius;
+            for( ; dirCount < maxDir ; dirCount++ ){
 
-                this.loadedChunks[ id ] = this.terrain.getChunk( id, chunkSize * a, chunkSize * b );
+                let x = Math.floor( next.x / chunkSize );
+                let z = Math.floor( next.y / chunkSize );
+                let id = z * chunkSize + x;
 
+                if( this.loadedChunks.find( ( item ) => item.getId() === id ) )
+                    continue;
 
+                id > -1 ? this.loadedChunks.push( this.terrain.getChunk( id, x * chunkSize, z * chunkSize ) ) : "";
+
+                if( currentRadius === 0 )
+                    break;
+
+                next.rotateAround( center, angle );
             }
         }
+        
     }
 
     private isInLastChunk( x: number, z: number ): boolean {
