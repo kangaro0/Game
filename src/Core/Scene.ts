@@ -41,6 +41,8 @@ export class Scene {
 
             let gl = this.gl;
 
+            item.setup( gl );
+
             // Get geometry
             let geometry = item.getGeometry();
             geometry.createBuffers( gl );
@@ -52,9 +54,6 @@ export class Scene {
             let attributeLocations = item.getAttributeLocations();
             // Get uniform locations
             let uniformLocations = item.getUniformLocations();
-
-            // Set program 
-            gl.useProgram( item.getProgram() );
 
             // Send vertices to shader
             gl.bindBuffer( gl.ARRAY_BUFFER, buffers.vertexBuffer );
@@ -73,6 +72,9 @@ export class Scene {
 
             // Send indices to shader
             gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, buffers.indexBuffer );
+
+            // Set program 
+            gl.useProgram( item.getProgram() );
 
             // Set uniforms
             // perspective matrix: [ 0 ]
@@ -100,6 +102,11 @@ export class Scene {
                 gl.UNSIGNED_SHORT,
                 0
             );
+
+            // Clean up
+            gl.useProgram( null );
+            gl.bindBuffer( gl.ARRAY_BUFFER, null );
+            gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, null );
         });
     }
 }

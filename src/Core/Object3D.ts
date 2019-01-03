@@ -23,8 +23,12 @@ export class Object3D {
     private fragmentShader: WebGLShader | null;
     private program: WebGLProgram | null;
 
+    // Locations
     private attributeLocations: Array<number>;
     private uniformLocations: Array<WebGLUniformLocation>;
+
+    // State
+    private bSetup: boolean;
 
     constructor( g: Geometry ){
         this.id = UUID.create();
@@ -38,9 +42,10 @@ export class Object3D {
         this.fragmentShader = null;
         this.program = null;
 
-
         this.attributeLocations = new Array<number>();
         this.uniformLocations = new Array<WebGLUniformLocation>();
+
+        this.bSetup = false;
     }
 
     // Getter & Setter
@@ -112,8 +117,15 @@ export class Object3D {
         return this.uniformLocations;
     }
 
+    public isSetup(){
+        return this.bSetup;
+    }
+
     // Rendering
     public setup( gl: WebGL2RenderingContext ){
+
+        if( this.bSetup )
+            return;
 
         // Get Vertex Attribute
         this.attributeLocations.push( gl.getAttribLocation( this.program as WebGLProgram, 'vertex' ) );
@@ -124,6 +136,8 @@ export class Object3D {
 
         // Create Buffers
         this.geometry.createBuffers( gl );
+
+        this.bSetup = true;
 
         this.children.forEach( ( v, i ) => {
             v.setup( gl );

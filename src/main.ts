@@ -7,47 +7,52 @@ import { Renderer } from './Core/Renderer';
 import { Object3D } from './Core/Object3D';
 import { Geometry } from './Core/Geometry';
 import { Scene } from './Core/Scene';
+import * as Interfaces from './Interfaces';
 
-// Shaders
-let vertexShaderSource = require( './Shader/vertex.glsl' ).default;
-let fragmentShaderSource = require( './Shader/fragment.glsl' ).default;
+window.onload = () => {
 
-var canvas = document.getElementById( 'canvas' ) as HTMLCanvasElement;
-var gl = canvas.getContext( 'webgl2' ) as WebGL2RenderingContext;
+    // Shaders
+    let vertexShaderSource = require( './Shader/vertex.glsl' ).default;
+    let fragmentShaderSource = require( './Shader/fragment.glsl' ).default;
 
-// Compile shaders and link to program
-let vertexShader = GLHelper.createShader( gl, gl.VERTEX_SHADER, vertexShaderSource ) as WebGLShader;
-let fragmentShader = GLHelper.createShader( gl, gl.FRAGMENT_SHADER, fragmentShaderSource ) as WebGLShader;
-let program = GLHelper.createProgram( gl, vertexShader, fragmentShader ) as WebGLProgram;
+    var canvas = document.getElementById( 'canvas' ) as HTMLCanvasElement;
+    var gl = canvas.getContext( 'webgl2' ) as WebGL2RenderingContext;
 
-// Create Geometry
-let geometry = Geometry.fromDesc( GeometryFactory.Cube() );
-// Create Object3D
-let obj = new Object3D( geometry );
-obj.setShaders( vertexShader, fragmentShader );
-obj.setProgram( program );
+    // Compile shaders and link to program
+    let vertexShader = GLHelper.createShader( gl, gl.VERTEX_SHADER, vertexShaderSource ) as WebGLShader;
+    let fragmentShader = GLHelper.createShader( gl, gl.FRAGMENT_SHADER, fragmentShaderSource ) as WebGLShader;
+    let program = GLHelper.createProgram( gl, vertexShader, fragmentShader ) as WebGLProgram;
 
-// Create perspective matrix
-let perspectiveMatrix = GLMatrix.Perspective(
-    45 * Math.PI / 180,
-    gl.canvas.clientWidth / gl.canvas.clientHeight,
-    0.1,
-    500
-);
-// Create scene
-let scene = new Scene( gl );
-scene.setMatrix( perspectiveMatrix );
-scene.addObject( obj );
+    // Create Geometry
+    let geometry = Geometry.fromDesc( GeometryFactory.Cube() );
+    // Create Object3D
+    let obj = new Object3D( geometry );
+    obj.setShaders( vertexShader, fragmentShader );
+    obj.setProgram( program );
 
-// Create renderer
-//let renderer = new Renderer( scene );
-//render();
+    // Create perspective matrix
+    let perspectiveMatrix = GLMatrix.Perspective(
+        45 * Math.PI / 180,
+        gl.canvas.clientWidth / gl.canvas.clientHeight,
+        0.1,
+        500
+    );
+    // Create scene
+    let scene = new Scene( gl );
+    scene.setMatrix( perspectiveMatrix );
+    scene.addObject( obj );
 
-function render(){
-    scene.draw();
-    requestAnimationFrame( render );
+    // Create renderer
+    let renderer = new Renderer( gl, scene );
+    renderer.init();
+
+    function renderLoop(){
+        renderer.render();
+        //requestAnimationFrame( renderLoop );
+    }
+    requestAnimationFrame( renderLoop );
+
 }
-requestAnimationFrame( render );
 
 
 
