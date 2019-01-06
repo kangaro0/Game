@@ -1,4 +1,5 @@
 import { Matrix4 } from '../Math/Matrix4';
+import { Vector4 } from '../Math/Vector4';
 
 export class GLMatrix {
 
@@ -22,17 +23,46 @@ export class GLMatrix {
         var d = -2 * far * near / ( far - near );
 
         let arr = [
-            x,0,0,0,
-            0,y,0,0,
-            a,b,c,-1,
-            0,0,d,0
+            x,0,a,0,
+            0,y,b,0,
+            0,0,c,d,
+            0,0,-1,0
         ];
 
         let m = new Matrix4( arr );
         return m;
     }
 
-    public static Camera( ){
+    public static View( eye: Vector4, up: Vector4, target: Vector4 ){
+        let z = eye.substract( target ).normalize();
+        let x = up.crossProduct( z ).normalize();
+        let y = z.crossProduct( x );
 
+        x.setW( -x.dotProduct( eye ) );
+        y.setW( -y.dotProduct( eye ) );
+        z.setW( -z.dotProduct( eye ) );
+
+        let arr = x.toArray().concat( y.toArray().concat( z.toArray().concat( [ 0,0,0,1 ] ) ) ); 
+        let m = new Matrix4( arr );
+        return m;
     }
+
+    /*
+        mat4 LookAtRH( vec3 eye, vec3 target, vec3 up )
+        {
+            vec3 zaxis = normal(eye - target);    // The "forward" vector.
+            vec3 xaxis = normal(cross(up, zaxis));// The "right" vector.
+            vec3 yaxis = cross(zaxis, xaxis);     // The "up" vector.
+        
+            // Create a 4x4 view matrix from the right, up, forward and eye position vectors
+            mat4 viewMatrix = {
+                vec4(      xaxis.x,            yaxis.x,            zaxis.x,       0 ),
+                vec4(      xaxis.y,            yaxis.y,            zaxis.y,       0 ),
+                vec4(      xaxis.z,            yaxis.z,            zaxis.z,       0 ),
+                vec4(-dot( xaxis, eye ), -dot( yaxis, eye ), -dot( zaxis, eye ),  1 )
+            };
+            
+            return viewMatrix;
+        }
+    */
 }

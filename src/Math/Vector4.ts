@@ -54,29 +54,74 @@ export class Vector4 {
         this.arr[ 3 ] = v;
     }
 
+    public set( i: number, v: number ){
+        this.arr[ i ] = v;
+    }
+
     // Conversion
     public toArray(){
         return [ this.arr[ 0 ], this.arr[ 1 ], this.arr[ 2 ], this.arr[ 3 ] ];
     }
 
     // Math
-    public add( v: Vector4 ){
-        this.arr[ 0 ] += v.getX();
-        this.arr[ 1 ] += v.getY();
-        this.arr[ 2 ] += v.getZ();
+    public add( v: Vector4 ): Vector4 {
+        let u = new Vector4( 0,0,0,1 );
+
+        u.set( 0, this.arr[ 0 ] + v.getX() );
+        u.set( 1, this.arr[ 1 ] + v.getY() );
+        u.set( 2, this.arr[ 2 ] + v.getZ() );
+
+        return u;
     }
 
-    public multiplyScalar( s: number ){
-        this.arr[ 0 ] *= s;
-        this.arr[ 1 ] *= s;
-        this.arr[ 2 ] *= s;
+    public substract( v: Vector4 ): Vector4 {
+        let u = new Vector4( 0,0,0,1 );
+
+        u.set( 1, this.arr[ 0 ] - v.getX() );
+        u.set( 2, this.arr[ 1 ] - v.getX() );
+        u.set( 3, this.arr[ 2 ] - v.getZ() );
+
+        return u;
     }
 
-    public normalize(){
-        let l = 0;
-        for( let i = 0; i < 3 ; i++ )
-            l = l + Math.pow( this.get( i ), 2 );
-        l = Math.sqrt( l );
-        this.multiplyScalar( 1 / l ); 
+    public multiplyScalar( s: number ): Vector4 {
+        let u = new Vector4( 0,0,0,this.getW() );
+
+        u.set( 0, this.arr[ 0 ] * s );
+        u.set( 1, this.arr[ 1 ] * s );
+        u.set( 2, this.arr[ 2 ] * s );
+
+        return u;
+    }
+
+    public dotProduct( v: Vector4 ): number {
+        let sum = 0;
+        for( let i = 0 ; i < 4 ; i++ )
+            sum += this.get( i ) * v.get( i );
+        return sum;
+    }
+
+    public crossProduct( v: Vector4 ): Vector4 {
+        let u = new Vector4( 0,0,0,1 );
+
+        u.set( 0, this.arr[ 1 ] * v.getZ() - this.arr[ 2 ] * v.getY() );
+        u.set( 1, this.arr[ 2 ] * v.getX() - this.arr[ 0 ] * v.getZ() );
+        u.set( 2, this.arr[ 3 ] * v.getY() - this.arr[ 1 ] * v.getX() );
+
+        return u;
+    }
+
+    public normalize(): Vector4 {
+        let mean = 0;
+
+        for( let i = 0 ; i < 3 ; i++ )
+            mean += Math.pow( this.get( i ), 2 );
+        mean = Math.sqrt( mean );
+        
+        return this.multiplyScalar( 1 / mean );
+    }
+
+    public print(){
+        console.log( this.getX() + ' ' + this.getY() + ' ' + this.getZ() + ' ' + this.getW() );
     }
 }

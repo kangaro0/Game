@@ -37,6 +37,32 @@ export class Matrix4 {
         return this.arr;
     }
 
+    public getRow( r: number ): Vector4 {
+        let v = new Vector4( 0,0,0,0 );
+
+        let j = 0;
+        for( let i = 0 + r ; i < 16 ; i += 4 ){
+            v.set( j, this.get( i ) );
+            j++;
+        }
+        
+        return v;
+    }
+
+    public getColumn( c: number ): Vector4 {
+        let v = new Vector4( 0,0,0,0 );
+
+        let b = 0 + c * 4;
+        let e = b + 4;
+        let j = 0;
+        for( ; b < e ; b++ ){
+            v.set( j, this.get( b ) );
+            j++;
+        }
+
+        return v;
+    }
+
     // Setter
     public set( i: number, v: number ): void {
         this.arr[ i ] = v;
@@ -48,20 +74,39 @@ export class Matrix4 {
 
     // Math
     public add( m: Matrix4 ): Matrix4 {
-        for( let i = 0 ; i < 16 ; i++ )
-            this.set( i, this.get( i ) + m.get( i ) );
+        let n = Matrix4.identity();
 
-        return this;
+        for( let i = 0 ; i < 16 ; i++ )
+            n.set( i, this.get( i ) + m.get( i ) );
+
+        return n;
     }
 
     public multiply( m: Matrix4 ): Matrix4 {
+        let n = Matrix4.identity();
 
-        return this;
+        for( let y = 0 ; y < 4 ; y++ ){
+            for( let x = 0 ; x < 4 ; x++ ){
+
+                let sum = 0;
+                let r = this.getRow( x );
+                let c = m.getColumn( y );
+                for( let i = 0 ; i < 4 ; i++ )
+                    sum += r.get( i ) * c.get( i );
+                n.setXY( y,x,sum );
+            }
+        }
+
+        return n;
     }
 
     public multiplyScalar( s: number ){
+        let m = Matrix4.identity();
+
         for( let i = 0 ; i < 16 ; i++ )
-            this.set( i, this.get( i ) * s );
+            m.set( i, this.get( i ) * s );
+        
+        return m;
     }
 
     public multiplyVector( v: Vector4 ): Vector4 {

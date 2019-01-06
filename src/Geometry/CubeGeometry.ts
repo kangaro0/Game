@@ -1,32 +1,12 @@
-import { GeometryDescription } from "../../Interfaces";
+import { Geometry } from "./Geometry";
 
-export class GeometryFactory {
+export class CubeGeometry extends Geometry {
 
-    public static Plane(): GeometryDescription {
-        return {
-            vertices: new Float32Array([
-                -0.5,-0.5,0.5,1.0,
-                0.5,-0.5,0.5,1.0,
-                0.5,0.5,0.5,1.0,
-                -0.5,0.5,0.5,1.0,
-            ]),
-            normales: new Float32Array([
-                0.0,0.0,-1.0,1.0,
-                0.0,0.0,-1.0,1.0,
-                0.0,0.0,-1.0,1.0,
-                0.0,0.0,-1.0,1.0
-            ]),
-            indices: new Uint16Array([
-                0,1,2,      
-                0,2,3
-            ])
-        };
-    }
+    constructor(){
+        super();
 
-    // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Creating_3D_objects_using_WebGL
-    public static Cube(): GeometryDescription {
-        return {
-            vertices: new Float32Array([
+        this.setVertices(
+            new Float32Array([
                 // Front
                 -0.5,-0.5,0.5,1.0,
                 0.5,-0.5,0.5,1.0,
@@ -57,8 +37,11 @@ export class GeometryFactory {
                 -0.5,-0.5,0.5,1.0,
                 -0.5,0.5,0.5,1.0,
                 -0.5,0.5,-0.5,1.0
-            ]),
-            normales: new Float32Array([
+            ])
+        );
+
+        this.setNormales(
+            new Float32Array([
                 // Front
                 0.0,0.0,-1.0,1.0,
                 0.0,0.0,-1.0,1.0,
@@ -89,8 +72,11 @@ export class GeometryFactory {
                 -1.0,0.0,0.0,1.0,
                 -1.0,0.0,0.0,1.0,
                 -1.0,0.0,0.0,1.0
-            ]),
-            indices: new Uint16Array([
+            ])
+        );
+
+        this.setIndices(
+            new Uint16Array([
                 // Front
                 0,1,2,      
                 0,2,3,
@@ -110,6 +96,6 @@ export class GeometryFactory {
                 20,21,22,   
                 20,22,23
             ])
-        }
+        );
     }
 }

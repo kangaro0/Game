@@ -20,7 +20,15 @@ export class Transform {
     }
 
     public static Scale( v: Vector4 ){
+        let arr = [
+            v.getX(),0,0,0,
+            0,v.getY(),0,0,
+            0,0,v.getZ(),0,
+            0,0,0,1
+        ];
 
+        let m = new Matrix4( arr );
+        return m;
     }
 
     public static build( t: Matrix4, r: Matrix4, s: Matrix4 ): Matrix4 {

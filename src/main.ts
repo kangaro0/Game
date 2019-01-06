@@ -1,13 +1,12 @@
 import { GLHelper } from './GL/GLHelper';
 import { GLMatrix } from './GL/GLMatrix';
-import { Matrix4 } from './Math/Matrix4';
-import { GeometryFactory } from './Core/Misc/GeometryFactory';
-import { request } from 'http';
-import { Renderer } from './Core/Renderer';
+import { Renderer } from './Renderer/Renderer';
 import { Object3D } from './Core/Object3D';
-import { Geometry } from './Core/Geometry';
+import { Geometry } from './Geometry/Geometry';
 import { Scene } from './Core/Scene';
-import * as Interfaces from './Interfaces';
+import { Transform } from './Math/Transform';
+import { Vector4 } from './Math/Vector4';
+import { CubeGeometry } from './Geometry/CubeGeometry';
 
 window.onload = () => {
 
@@ -24,27 +23,35 @@ window.onload = () => {
     let program = GLHelper.createProgram( gl, vertexShader, fragmentShader ) as WebGLProgram;
 
     // Create Geometry
-    let geometry = Geometry.fromDesc( GeometryFactory.Cube() );
+    let geometry = new CubeGeometry();
     // Create Object3D
-    let obj = new Object3D( geometry );
-    obj.setShaders( vertexShader, fragmentShader );
-    obj.setProgram( program );
+    let obj = new Object3D( geometry, gl, program );
+    obj.setMatrix(
+        Transform.Scale( new Vector4( 0.5,0.5,0.5,1) )
+    );
+
+    // Create View Matrix
+    let viewMatrix = GLMatrix.View(
+        new Vector4( 0,10,1,1 ),
+        new Vector4( 0,1,0,1 ),
+        new Vector4( 0,0,0,1 )
+    );
+
+    // Create scene
+    let scene = new Scene( viewMatrix );
+    scene.addObject( obj );
 
     // Create perspective matrix
     let perspectiveMatrix = GLMatrix.Perspective(
-        45 * Math.PI / 180,
+        45,
         gl.canvas.clientWidth / gl.canvas.clientHeight,
         0.1,
         500
     );
-    // Create scene
-    let scene = new Scene( gl );
-    scene.setMatrix( perspectiveMatrix );
-    scene.addObject( obj );
 
     // Create renderer
     let renderer = new Renderer( gl, scene );
-    renderer.init();
+    renderer.setMatrix( perspectiveMatrix );
 
     function renderLoop(){
         renderer.render();

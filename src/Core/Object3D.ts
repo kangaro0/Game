@@ -1,4 +1,4 @@
-import { Geometry } from './Geometry';
+import { Geometry } from '../Geometry/Geometry';
 import { Matrix4 } from "../Math/Matrix4";
 import { UUID } from '../Data/UUID';
 import { List } from '../Data/List';
@@ -15,40 +15,36 @@ export class Object3D {
     // Geometry
     private geometry: Geometry;
 
-    // Transformation
-    private matrix: Matrix4;
+    // GL
+    private program: WebGLProgram;
 
-    // Shaders
-    private vertexShader: WebGLShader | null;
-    private fragmentShader: WebGLShader | null;
-    private program: WebGLProgram | null;
+    private vao: WebGLVertexArrayObject | null;
+    private vbo: Array<WebGLBuffer>;
 
-    // Locations
     private attributeLocations: Array<number>;
     private uniformLocations: Array<WebGLUniformLocation>;
 
-    // State
-    private bSetup: boolean;
+    // Transformation
+    private matrix: Matrix4;
 
-    constructor( g: Geometry ){
+    constructor( g: Geometry, gl: WebGL2RenderingContext, p: WebGLProgram ){
         this.id = UUID.create();
-        this.geometry = g;
         this.matrix = Matrix4.identity();
+        this.geometry = g;
+
+        this.program = p;
+        this.vao = null;
+        this.vbo = new Array<WebGLBuffer>( 0 );
+        this.attributeLocations = new Array<number>( 0 );
+        this.uniformLocations = new Array<WebGLUniformLocation>( 0 );
 
         this.children = new List<Object3D>();
         this.parent = null;
 
-        this.vertexShader = null;
-        this.fragmentShader = null;
-        this.program = null;
-
-        this.attributeLocations = new Array<number>();
-        this.uniformLocations = new Array<WebGLUniformLocation>();
-
-        this.bSetup = false;
+        this.setup( gl );
     }
 
-    // Getter & Setter
+    // Getter 
     public getId(){
         return this.id;
     }
@@ -57,18 +53,32 @@ export class Object3D {
         return this.geometry;
     }
 
-    public setGeometry( geo: Geometry ){
-        this.geometry = geo;
-    }
-
     public getMatrix(){
         return this.matrix;
+    }
+
+    public getProgram(){
+        return this.program;
+    }
+
+    public getVAO(){
+        return this.vao;
+    }
+
+    public getUniformLocations(){
+        return this.uniformLocations;
+    }
+
+    // Setter
+    public setGeometry( geo: Geometry ){
+        this.geometry = geo;
     }
 
     public setMatrix( m: Matrix4 ){
         this.matrix = m;
     }
 
+    // Relationship
     public getParent(){
         return this.parent;
     }
@@ -89,58 +99,41 @@ export class Object3D {
         this.children.removeByIdentifier( identifier );
     }
 
-    public getShaders(){
-        return {
-            vertexShader: this.vertexShader,
-            fragmentShader: this.fragmentShader
-        };
-    }
+    // GL
+    private setup( gl: WebGL2RenderingContext ){
+        // Create VAO
+        this.vao = gl.createVertexArray();
+        gl.bindVertexArray( this.vao );
 
-    public setShaders( vertexShader: WebGLShader, fragmentShader: WebGLShader ){
-        this.vertexShader = vertexShader;
-        this.fragmentShader = fragmentShader;
-    }
+        // Get Attribute Locations
+        this.attributeLocations.push( gl.getAttribLocation( this.program, 'vertex' ) );
+        this.attributeLocations.push( gl.getAttribLocation( this.program, 'u_color' ) );
 
-    public getProgram(){
-        return this.program;
-    }
+        // Get Uniform Locations
+        this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_perspective' ) as WebGLUniformLocation );
+        this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_view' ) as WebGLUniformLocation );
+        this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_model' ) as WebGLUniformLocation );
 
-    public setProgram( program: WebGLProgram ){
-        this.program = program;
-    }
+        // Push vertices 
+        this.vbo.push( gl.createBuffer() as WebGLBuffer );
+        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.vbo[ 0 ] );
+        gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, this.geometry.getVertices(), gl.STATIC_DRAW );
+        gl.vertexAttribPointer( 
+            this.attributeLocations[ 0 ],
+            4,
+            gl.FLOAT,
+            false,
+            0,
+            0
+        );
+        gl.enableVertexAttribArray( this.attributeLocations[ 0 ] );
 
-    public getAttributeLocations(){
-        return this.attributeLocations;
-    }
-
-    public getUniformLocations(){
-        return this.uniformLocations;
-    }
-
-    public isSetup(){
-        return this.bSetup;
-    }
-
-    // Rendering
-    public setup( gl: WebGL2RenderingContext ){
-
-        if( this.bSetup )
-            return;
-
-        // Get Vertex Attribute
-        this.attributeLocations.push( gl.getAttribLocation( this.program as WebGLProgram, 'vertex' ) );
-        // Get Uniforms
-        this.uniformLocations.push( gl.getUniformLocation( this.program as WebGLProgram, 'u_perspective' ) as WebGLUniformLocation );
-        this.uniformLocations.push( gl.getUniformLocation( this.program as WebGLProgram, 'u_modelview' ) as WebGLUniformLocation );
-        this.uniformLocations.push( gl.getUniformLocation( this.program as WebGLProgram, 'u_color' ) as WebGLUniformLocation );
-
-        // Create Buffers
-        this.geometry.createBuffers( gl );
-
-        this.bSetup = true;
-
-        this.children.forEach( ( v, i ) => {
-            v.setup( gl );
-        });
+        // Push indices to buffer
+        this.vbo.push( gl.createBuffer() as WebGLBuffer )
+        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.vbo[ 1 ] );
+        gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, this.geometry.getIndices(), gl.STATIC_DRAW );
+    
+        // Clear
+        gl.bindVertexArray( null );
     }
 }

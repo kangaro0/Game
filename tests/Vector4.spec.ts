@@ -29,11 +29,22 @@ describe( 'Vector4: ', () => {
 
     it( 'should multiply by scalar', () => {
         let v = new Vector4( 10.0,11.0,12.0,13.0 );
-        v.multiplyScalar( 2 );
+        let vt = v.multiplyScalar( 2 );
 
-        expect( v.getX() ).to.equal( 20.0 );
-        expect( v.getY() ).to.equal( 22.0 );
-        expect( v.getZ() ).to.equal( 24.0 );
-        expect( v.getW() ).to.equal( 13.0 );
+        expect( vt.getX() ).to.equal( 20.0 );
+        expect( vt.getY() ).to.equal( 22.0 );
+        expect( vt.getZ() ).to.equal( 24.0 );
+        expect( vt.getW() ).to.equal( 13.0 );
+    });
+
+    it( 'should normalize', () => {
+        let v = new Vector4( 1,1,1,1 );
+        let vn = v.normalize();
+        let vt = v.multiplyScalar( 1 / Math.sqrt( 3 ) );
+
+        expect( vn.getX() ).to.equal( vt.getX() );
+        expect( vn.getY() ).to.equal( vt.getY() );
+        expect( vn.getZ() ).to.equal( vt.getZ() );
+        expect( vn.getW() ).to.equal( vt.getW() );
     });
 });
