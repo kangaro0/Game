@@ -65,6 +65,10 @@ export class Object3D {
         return this.vao;
     }
 
+    public getVBOs(){
+        return this.vbo;
+    }
+
     public getUniformLocations(){
         return this.uniformLocations;
     }
@@ -101,23 +105,25 @@ export class Object3D {
 
     // GL
     private setup( gl: WebGL2RenderingContext ){
-        // Create VAO
-        this.vao = gl.createVertexArray();
-        gl.bindVertexArray( this.vao );
 
         // Get Attribute Locations
-        this.attributeLocations.push( gl.getAttribLocation( this.program, 'vertex' ) );
-        this.attributeLocations.push( gl.getAttribLocation( this.program, 'u_color' ) );
+        this.attributeLocations.push( gl.getAttribLocation( this.program, 'a_position' ) );
 
         // Get Uniform Locations
         this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_perspective' ) as WebGLUniformLocation );
         this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_view' ) as WebGLUniformLocation );
         this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_model' ) as WebGLUniformLocation );
+        this.uniformLocations.push( gl.getUniformLocation( this.program, 'u_color' ) as WebGLUniformLocation );
+
+        // Create VAO
+        this.vao = gl.createVertexArray();
+        gl.bindVertexArray( this.vao );
 
         // Push vertices 
         this.vbo.push( gl.createBuffer() as WebGLBuffer );
-        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.vbo[ 0 ] );
-        gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, this.geometry.getVertices(), gl.STATIC_DRAW );
+        gl.bindBuffer( gl.ARRAY_BUFFER, this.vbo[ 0 ] );
+        gl.bufferData( gl.ARRAY_BUFFER, this.geometry.getVertices(), gl.STATIC_DRAW );
+        gl.enableVertexAttribArray( this.attributeLocations[ 0 ] );
         gl.vertexAttribPointer( 
             this.attributeLocations[ 0 ],
             4,
@@ -126,7 +132,6 @@ export class Object3D {
             0,
             0
         );
-        gl.enableVertexAttribArray( this.attributeLocations[ 0 ] );
 
         // Push indices to buffer
         this.vbo.push( gl.createBuffer() as WebGLBuffer )

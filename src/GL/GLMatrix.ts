@@ -33,6 +33,8 @@ export class GLMatrix {
         return m;
     }
 
+    public static Perspective2(){}
+
     public static View( eye: Vector4, up: Vector4, target: Vector4 ){
         let z = eye.substract( target ).normalize();
         let x = up.crossProduct( z ).normalize();
@@ -42,9 +44,32 @@ export class GLMatrix {
         y.setW( -y.dotProduct( eye ) );
         z.setW( -z.dotProduct( eye ) );
 
-        let arr = x.toArray().concat( y.toArray().concat( z.toArray().concat( [ 0,0,0,1 ] ) ) ); 
-        let m = new Matrix4( arr );
-        return m;
+        let arr = [
+            x.getX(),y.getX(),z.getX(),0,
+            x.getY(),y.getY(),z.getY(),0,
+            x.getZ(),y.getZ(),z.getZ(),0,
+            x.getW(),y.getW(),z.getW(),1
+        ];
+        
+        return new Matrix4( arr );
+    }
+
+    public static View2( eye: Vector4, up: Vector4, target: Vector4 ){
+        let vp = eye;
+        let vpn = eye.substract( target ).normalize();
+        let vup = up;
+
+        let x = vup.crossProduct( vpn ).normalize();
+        let y = vpn.crossProduct( x ).normalize();
+        let z = x.crossProduct( y );
+
+        let arr = [
+            x.getX(),y.getX(),z.getX(),0,
+            x.getY(),y.getY(),z.getY(),0,
+            x.getZ(),y.getZ(),z.getZ(),0,
+            x.getW(),y.getW(),z.getW(),1
+        ];
+        return new Matrix4( arr );
     }
 
     /*

@@ -8,6 +8,8 @@ import { Transform } from './Math/Transform';
 import { Vector4 } from './Math/Vector4';
 import { CubeGeometry } from './Geometry/CubeGeometry';
 
+let camPos = new Vector4( 0,10,0,1 );
+
 window.onload = () => {
 
     // Shaders
@@ -26,19 +28,17 @@ window.onload = () => {
     let geometry = new CubeGeometry();
     // Create Object3D
     let obj = new Object3D( geometry, gl, program );
-    obj.setMatrix(
-        Transform.Scale( new Vector4( 0.5,0.5,0.5,1) )
-    );
 
     // Create View Matrix
     let viewMatrix = GLMatrix.View(
-        new Vector4( 0,10,1,1 ),
+        new Vector4( 4,3,3,1 ),
         new Vector4( 0,1,0,1 ),
         new Vector4( 0,0,0,1 )
     );
 
     // Create scene
-    let scene = new Scene( viewMatrix );
+    let scene = new Scene();
+    scene.setMatrix( viewMatrix );
     scene.addObject( obj );
 
     // Create perspective matrix
@@ -54,11 +54,41 @@ window.onload = () => {
     renderer.setMatrix( perspectiveMatrix );
 
     function renderLoop(){
+        let viewMatrix = GLMatrix.View( new Vector4( x,y,z,1 ), new Vector4( 0,1,0,1 ), new Vector4( 0,0,0,1 ) );
+        scene.setMatrix( viewMatrix );
+
         renderer.render();
-        //requestAnimationFrame( renderLoop );
+        requestAnimationFrame( renderLoop );
     }
     requestAnimationFrame( renderLoop );
 
+}
+
+let x = 0;
+let y = 10;
+let z = 0;
+
+window.onkeypress = ( ev ) => {
+    switch( ev.key ){
+        case "w":
+            x += 0.1;
+            break;
+        case "s":
+            x -= 0.1;
+            break;
+        case "a":
+            z -= 0.1;
+            break;
+        case "d":
+            z += 0.1;
+            break;
+        case "r":
+            y += 0.1;
+            break;
+        case "t":
+            y += 0.1;
+            break;
+    }
 }
 
 

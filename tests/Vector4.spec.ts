@@ -47,4 +47,42 @@ describe( 'Vector4: ', () => {
         expect( vn.getZ() ).to.equal( vt.getZ() );
         expect( vn.getW() ).to.equal( vt.getW() );
     });
+
+    it( 'should add', () => {
+        let v1 = new Vector4( 1,2,3,1 );
+        let v2 = new Vector4( 1,2,3,1 );
+        let v3 = v1.add( v2 );
+
+        expect( v3.getX() ).to.equal( 2 );  
+        expect( v3.getY() ).to.equal( 4 );
+        expect( v3.getZ() ).to.equal( 6 );
+    });
+
+    it( 'should substract', () => {
+        let v1 = new Vector4( 1,2,3,1 );
+        let v2 = new Vector4( 1,2,3,1 );
+        let v3 = v1.substract( v2 );
+
+        expect( v3.getX() ).to.equal( 0 );
+        expect( v3.getY() ).to.equal( 0 );
+        expect( v3.getZ() ).to.equal( 0 );
+    });
+
+    it( 'should calulcate dot product', () => {
+        let v1 = new Vector4( 1,0,0,1 );
+        let v2 = new Vector4( 0,1,0,1 );
+        let d = v1.dotProduct( v2 );
+
+        expect( d ).to.equal( 0 );
+    });
+
+    it( 'should calculate cross product', () => {
+        let v1 = new Vector4( 1,2,3,1 );
+        let v2 = new Vector4( 1,2,3,1 );
+        let v3 = v1.crossProduct( v2 );
+
+        expect( v3.getX() ).to.equal( 0 );
+        expect( v3.getY() ).to.equal( 0 );
+        expect( v3.getZ() ).to.equal( 0 );
+    });
 });

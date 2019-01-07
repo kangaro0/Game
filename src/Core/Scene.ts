@@ -7,9 +7,9 @@ export class Scene {
     private objects: List<Object3D>;
     private matrix: Matrix4;
     
-    constructor( m: Matrix4 ){
+    constructor(){
         this.objects = new List<Object3D>();
-        this.matrix = m;
+        this.matrix = Matrix4.identity();
     }
 
     public getObjects(){
@@ -26,5 +26,9 @@ export class Scene {
 
     public getMatrix(){
         return this.matrix;
+    }
+
+    public setMatrix( m: Matrix4 ){
+        this.matrix = m;
     }
 }

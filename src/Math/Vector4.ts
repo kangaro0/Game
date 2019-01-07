@@ -78,7 +78,7 @@ export class Vector4 {
         let u = new Vector4( 0,0,0,1 );
 
         u.set( 1, this.arr[ 0 ] - v.getX() );
-        u.set( 2, this.arr[ 1 ] - v.getX() );
+        u.set( 2, this.arr[ 1 ] - v.getY() );
         u.set( 3, this.arr[ 2 ] - v.getZ() );
 
         return u;
@@ -96,7 +96,7 @@ export class Vector4 {
 
     public dotProduct( v: Vector4 ): number {
         let sum = 0;
-        for( let i = 0 ; i < 4 ; i++ )
+        for( let i = 0 ; i < 3 ; i++ )
             sum += this.get( i ) * v.get( i );
         return sum;
     }

@@ -1,5 +1,6 @@
 import { Scene } from "../Core/Scene";
 import { Matrix4 } from "../Math/Matrix4";
+import { Vector4 } from "../Math/Vector4";
 
 export class Renderer {
 
@@ -63,7 +64,12 @@ export class Renderer {
                 uLocations[ 2 ],
                 false,
                 item.getMatrix().getBuffer()
-            )
+            );
+            // color
+            gl.uniform4fv(
+                uLocations[ 3 ],
+                new Float32Array([ 1.0,0.0,0.0,1.0 ])
+            );
 
             gl.drawElements( gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0 );
         });
